@@ -1,11 +1,24 @@
 const express = require("express");
-const router = express.Router();
+const exphbs = require('express-handlebars');
+const app = express();
 
-router.get("/", async(req, res, next) => {
-    return res.status(200).json({
+// Set Handlebars as the default view engine
+app.engine('.hbs', exphbs({ extname: '.hbs' }));
+app.set('view engine', '.hbs');
+
+// Set the path for views directory
+app.set('views', path.join(__dirname, 'views'));
+
+// Routes
+app.get("/", async(req, res, next) => {
+    res.render('index', {
         title: "Express Testing",
-        message: "The app is working properly!",
+        message: "The app is working properly!"
     });
 });
 
-module.exports = router;
+// Start the server
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+    console.log(`Server is running on port ${PORT}`);
+});
